@@ -25,7 +25,6 @@ The model is trained on 90 days of hourly BTC/USD data. It uses:
 
 You can train your own model using:
 
-```bash
 python train_model.py
 
 ## 📂 File Structure
