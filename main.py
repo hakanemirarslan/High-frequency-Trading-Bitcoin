@@ -3,6 +3,7 @@ import numpy as np
 import time
 from datetime import datetime
 import joblib
+import pandas as pd
 
 model = joblib.load("btc_predictor.pkl")
 print("🧠 Model loaded: btc_predictor.pkl")
