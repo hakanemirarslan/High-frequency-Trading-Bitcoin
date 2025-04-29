@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Oval } from "react-loader-spinner";
+import "./PriceDisplay.css";
+import ChartDisplay from "./ChartDisplay";
 
 const PriceDisplay = () => {
   const [price, setPrice] = useState(null);
   const [prediction, setPrediction] = useState("WAITING");
   const [chartUrl, setChartUrl] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
-  // Poll for prediction and chart every 30 seconds
+  const handleZoomIn = () => setZoomLevel(z => Math.min(z + 0.1, 1.8));
+  const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.1, 0.6));
+
   useEffect(() => {
     let chartObjectUrl = null;
     const fetchData = () => {
@@ -44,50 +49,38 @@ const PriceDisplay = () => {
   }, []);
 
   return (
-    <div>
-        <h1>Bitcoin Trading Prediction</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        
-        <button
-          style={{
-            backgroundColor: "#3b82f6",
-            color: "white",
-            padding: "8px 16px",
-            borderRadius: "4px",
-            border: "none",
-            cursor: "pointer"
-          }}
-          onClick={() => window.location.reload()}
-        >
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ marginBottom: '1.2rem', display: 'flex', gap: '0.7rem' }}>
+        <button className="zoom-btn" onClick={handleZoomOut} title="Zoom Out">-</button>
+        <button className="zoom-btn" onClick={handleZoomIn} title="Zoom In">+</button>
+      </div>
+      <div
+        className="price-card"
+        style={{
+          transform: `scale(${zoomLevel})`,
+          transition: 'transform 0.25s cubic-bezier(.4,2.3,.3,1)',
+          transformOrigin: 'top center',
+        }}
+      >
+        <div className="price-title">Bitcoin Trading Prediction</div>
+        <button className="refresh-btn" onClick={() => window.location.reload()}>
           Refresh
         </button>
+        <ChartDisplay chartUrl={chartUrl} />
+        {price === null && prediction === "WAITING" ? (
+          <div className="loading">
+            <Oval height={50} width={50} color="blue" ariaLabel="loading" />
+            <p>Loading...</p>
+          </div>
+        ) : price === null && prediction === null ? (
+          <div className="error-message">No data available.</div>
+        ) : (
+          <>
+            <div className="price-value">${price}</div>
+            <div className={`prediction ${prediction}`}>Prediction: {prediction}</div>
+          </>
+        )}
       </div>
-      {/* Chart display logic */}
-      {chartUrl === null ? (
-        <div>
-          <Oval height={40} width={40} color="blue" ariaLabel="loading" />
-          <p>Loading chart...</p>
-        </div>
-      ) : chartUrl === 'error' ? (
-        <div style={{ color: 'red' }}>Chart could not be loaded.</div>
-      ) : (
-        <img src={chartUrl} alt="BTC Chart" style={{ maxWidth: '100%', height: 'auto' }} />
-      )}
-
-      {price === null && prediction === "WAITING" ? (
-        <div>
-          <Oval height={50} width={50} color="blue" ariaLabel="loading" />
-          <p>Loading...</p>
-        </div>
-      ) : price === null && prediction === null ? (
-        <div style={{ color: 'red' }}>No data available.</div>
-      ) : (
-        <div>
-          <h1>BTC Price: ${price}</h1>
-          <h1>Price: ${price}</h1>
-          <h2>Prediction: {prediction}</h2>
-        </div>
-      )}
     </div>
   );
 };
