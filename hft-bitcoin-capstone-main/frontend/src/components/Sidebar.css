@@ -1,0 +1,132 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 220px;
+  background: #23272f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 0 20px 0;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 24px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 15px;
+  border-radius: 0 30px 30px 0;
+  letter-spacing: 0.5px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.home-btn:hover {
+  background-color: #2e3241;
+  text-decoration: none;
+  color: #fff;
+}
+
+.home-icon {
+  margin-right: 15px;
+  font-size: 1.8rem;
+  transition: transform 0.2s ease;
+}
+
+.home-btn:hover .home-icon {
+  transform: scale(1.1);
+}
+
+/* Logout Button */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  color: #ff6b6b;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 0 30px 30px 0;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff8787;
+}
+
+.logout-icon {
+  margin-right: 15px;
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.logout-btn:hover .logout-icon {
+  transform: scale(1.1);
+}
+
+/* Add some space at the bottom of the sidebar */
+.sidebar {
+  padding-bottom: 30px;
+}
+.menu {
+  width: 100%;
+  padding: 16px 24px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #333;
+  margin: 10px 0 15px 0;
+}
+.menu-title {
+  font-size: 25px;
+}
+.menu-arrow {
+  font-size: 25px;
+}
+.submenu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 8px;
+}
+.sidebar-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 16px 24px;
+  text-align: left;
+  width: 100%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 0 30px 30px 0;
+  margin: 5px 0;
+}
+
+.sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* Removed duplicate .sidebar-btn:hover */

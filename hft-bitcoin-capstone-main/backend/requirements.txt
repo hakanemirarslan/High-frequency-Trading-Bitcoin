@@ -1,0 +1,12 @@
+websocket-client
+pandas
+numpy
+scikit-learn
+joblib
+fastapi
+uvicorn
+pandas
+joblib
+matplotlib
+yfinance
+requests
