@@ -12,6 +12,8 @@
 # import train_model
 # from fastapi import FastAPI
 # from fastapi.responses import StreamingResponse
+
+####-------OLD----------####
 import threading
 import time
 from datetime import datetime
@@ -268,3 +270,4 @@ if __name__ == "__main__":
     bot_thread = threading.Thread(target=trading_loop, daemon=True)
     bot_thread.start()
     uvicorn.run(app, host="0.0.0.0", port=8000)
+###------------OLD-------------####
