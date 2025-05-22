@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../styles/AssetComparison.css";
+import "../styles/ProfitComparison.css";
 
-const ProfitComparision = () => {
+const ProfitComparison = () => {
   const [startDate, setStartDate] = useState("");
   const [assets, setAssets] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchData = async () => {
+    if (!startDate || !assets) {
+      setError("Please enter both date and assets");
+      return;
+    }
+
     try {
       setLoading(true);
+      setError("");
 
       const queryAssets = assets
         .split(",")
@@ -24,158 +30,151 @@ const ProfitComparision = () => {
       );
 
       setData(response.data.buy_and_hold || []);
-      setSubmitted(true);
     } catch (error) {
       console.error("Error fetching investment data:", error);
+      setError("Failed to fetch data. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="p-6 max-w-6xl mx-auto text-gray-800">
-      <h1 className="text-4xl font-bold text-center mb-8 text-white-700 drop-shadow">
-        💰 Asset Profit Comparison
-      </h1>
+  const formatValue = (value, isCurrency = false, decimals = 2) => {
+    if (value === null || value === undefined) return "N/A";
+    if (isCurrency) return `$${parseFloat(value).toFixed(decimals)}`;
+    return parseFloat(value).toFixed(decimals);
+  };
 
-      {/* Form Section */}
-      {!submitted && (
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <input
-              type="date"
-              className="border rounded p-2 flex-1 text-lg"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <input
-              type="text"
-              className="border rounded p-2 flex-1 text-lg"
-              value={assets}
-              onChange={(e) => setAssets(e.target.value)}
-              placeholder="Assets (e.g. Gold,NASDAQ,BIST100,BTC)"
-            />
+  const getReturnClass = (value) => {
+    if (value === undefined || value === null) return "";
+    return parseFloat(value) >= 0 ? "positive" : "negative";
+  };
+
+  return (
+    <div className="profit-comparison-container">
+      <header className="page-header">
+        <h1>Profit Comparison</h1>
+      </header>
+
+      <div className="comparison-layout">
+        {/* Left Column - Form */}
+        <div className="form-column">
+          <div className="form-card">
+            <h2>Compare Assets</h2>
+            
+            <div className="form-group">
+              <label htmlFor="startDate">Start Date</label>
+              <input
+                type="date"
+                id="startDate"
+                className="form-input"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                max={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="assets">Assets (comma separated)</label>
+              <input
+                type="text"
+                id="assets"
+                className="form-input"
+                value={assets}
+                onChange={(e) => setAssets(e.target.value)}
+                placeholder="e.g. Gold, NASDAQ, BIST100"
+              />
+              <small className="hint">BTC is automatically included in the comparison</small>
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
             <button
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 text-lg rounded shadow hover:from-blue-700 hover:to-purple-700 transition"
+              className="compare-button"
               onClick={fetchData}
-              disabled={!startDate || !assets}
+              disabled={loading || !startDate || !assets}
             >
-              🚀 Compare
+              {loading ? 'Comparing...' : 'Compare'}
             </button>
           </div>
         </div>
-      )}
 
-      {/* Loading */}
-      {loading && (
-        <p className="text-xl text-center text-gray-600">Loading data...</p>
-      )}
+        {/* Right Column - Results */}
+        <div className="results-column">
+          {loading ? (
+            <div className="loading-state">
+              <div className="spinner"></div>
+              <p>Fetching comparison data...</p>
+            </div>
+          ) : data.length > 0 ? (
+            <div className="results-grid">
+              {data.map((item, idx) => {
+                const isBTC = item.asset === "BTC";
+                const ticker = isBTC ? "BTC" : item.return_percent && Object.keys(item.return_percent)[0];
+                const returnPercent = isBTC ? item.return_percent : item.return_percent?.[ticker];
+                
+                const getValue = (obj, key) => obj && obj[key] !== undefined ? obj[key] : null;
+                const startPrice = isBTC ? item.start_price : getValue(item.start_price, ticker);
+                const endPrice = isBTC ? item.end_price : getValue(item.end_price, ticker);
+                const unitsBought = isBTC ? item.units_bought : getValue(item.units_bought, ticker);
+                const finalValue = isBTC ? item.final_value : getValue(item.final_value, ticker);
+                const profit = isBTC ? item.profit : getValue(item.profit, ticker);
 
-      {/* Result Section */}
-      {!loading && submitted && data.length > 0 && (
-        <div className="grid md:grid-cols-2 gap-6">
-          {data.map((item, idx) => {
-            const isBTC = item.asset === "BTC";
-
-            const ticker = isBTC
-              ? "BTC"
-              : item.return_percent && Object.keys(item.return_percent)[0];
-
-            const returnPercent = isBTC
-              ? item.return_percent
-              : item.return_percent?.[ticker];
-
-            const getValue = (obj, key) =>
-              obj && obj[key] !== undefined ? obj[key] : null;
-
-            return (
-              <div
-                className="asset-comparison-page bg-white border rounded-xl p-6 shadow-md hover:shadow-xl transition"
-                key={idx}
-              >
-                <h2 className="text-2xl font-semibold text-indigo-700 mb-2">
-                  {item.asset}
-                </h2>
-                <div className="space-y-1 text-lg">
-                  <p>
-                    <strong>📅 Start Date:</strong> {item.start_date || "N/A"}
-                  </p>
-                  <p>
-                    <strong>📅 End Date:</strong> {item.end_date || "N/A"}
-                  </p>
-                  <p>
-                    <strong>💵 Start Price:</strong>{" "}
-                    {isBTC
-                      ? `$${item.start_price?.toFixed(2) ?? "N/A"}`
-                      : getValue(item.start_price, ticker) !== null
-                      ? `$${getValue(item.start_price, ticker)}`
-                      : "N/A"}
-                  </p>
-                  <p>
-                    <strong>💵 End Price:</strong>{" "}
-                    {isBTC
-                      ? `$${item.end_price?.toFixed(2) ?? "N/A"}`
-                      : getValue(item.end_price, ticker) !== null
-                      ? `$${getValue(item.end_price, ticker)}`
-                      : "N/A"}
-                  </p>
-                  <p>
-                    <strong>📦 Units Bought:</strong>{" "}
-                    {isBTC
-                      ? item.units_bought?.toFixed(4) ?? "N/A"
-                      : getValue(item.units_bought, ticker) !== null
-                      ? getValue(item.units_bought, ticker).toFixed(4)
-                      : "N/A"}
-                  </p>
-                  <p>
-                    <strong>💰 Final Value:</strong>{" "}
-                    {isBTC
-                      ? `$${item.final_value?.toFixed(2) ?? "N/A"}`
-                      : getValue(item.final_value, ticker) !== null
-                      ? `$${getValue(item.final_value, ticker).toFixed(2)}`
-                      : "N/A"}
-                  </p>
-                  <p>
-                    <strong>📈 Profit:</strong>{" "}
-                    <span
-                      className={
-                        returnPercent >= 0 ? "text-green-600" : "text-red-600"
-                      }
-                    >
-                      {isBTC
-                        ? `$${item.profit?.toFixed(2) ?? "N/A"}`
-                        : getValue(item.profit, ticker) !== null
-                        ? `$${getValue(item.profit, ticker).toFixed(2)}`
-                        : "N/A"}
-                    </span>
-                  </p>
-                  <p>
-                    <strong>📊 Return:</strong>{" "}
-                    <span
-                      className={
-                        returnPercent >= 0 ? "text-green-600" : "text-red-600"
-                      }
-                    >
-                      {returnPercent !== undefined
-                        ? `${returnPercent.toFixed(2)}%`
-                        : "N/A"}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+                return (
+                  <div key={idx} className="asset-card">
+                    <div className="asset-header">
+                      <h3>{item.asset}</h3>
+                      <span className={`return-badge ${getReturnClass(returnPercent)}`}>
+                        {returnPercent !== undefined ? `${parseFloat(returnPercent).toFixed(2)}%` : 'N/A'}
+                      </span>
+                    </div>
+                    
+                    <div className="asset-details">
+                      <div className="detail-row">
+                        <span className="detail-label">Start Date:</span>
+                        <span>{item.start_date || 'N/A'}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">End Date:</span>
+                        <span>{item.end_date || 'N/A'}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Start Price:</span>
+                        <span>{formatValue(startPrice, true)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">End Price:</span>
+                        <span>{formatValue(endPrice, true)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Units Bought:</span>
+                        <span>{formatValue(unitsBought, false, 4)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Final Value:</span>
+                        <span>{formatValue(finalValue, true)}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Profit/Loss:</span>
+                        <span className={getReturnClass(profit)}>
+                          {formatValue(profit, true)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="empty-icon">📊</div>
+              <h3>No comparison data yet</h3>
+              <p>Enter a date and assets to compare their performance</p>
+            </div>
+          )}
         </div>
-      )}
-
-      {/* No results */}
-      {!loading && submitted && data.length === 0 && (
-        <p className="text-xl text-center text-gray-500">
-          No data found for the selected assets or date.
-        </p>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ProfitComparision;
+export default ProfitComparison;

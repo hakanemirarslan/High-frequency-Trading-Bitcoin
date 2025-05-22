@@ -12,6 +12,8 @@ import Wallet from "./pages/Wallet";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import AssetComparison from "./pages/AssetComparison";
+import Trade from "./pages/Trade";
+import Settings from "./pages/Settings";
 import { Oval } from "react-loader-spinner";
 import "./components/Sidebar.css";
 import ProfitComparision from "./pages/ProfitComparision";
@@ -106,6 +108,20 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
+        <Route
+          path="/trade"
+          element={
+            <ProtectedRoute>
+              <div style={{ display: "flex" }}>
+                <Sidebar />
+                <div style={{ marginLeft: 220, flex: 1, padding: "20px" }}>
+                  <Trade />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/comparison"
@@ -141,6 +157,20 @@ function App() {
                 <Sidebar />
                 <div style={{ marginLeft: 220, flex: 1, padding: "20px" }}>
                   <Profile />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <div style={{ display: "flex" }}>
+                <Sidebar />
+                <div style={{ marginLeft: 220, flex: 1, padding: "20px" }}>
+                  <Settings />
                 </div>
               </div>
             </ProtectedRoute>

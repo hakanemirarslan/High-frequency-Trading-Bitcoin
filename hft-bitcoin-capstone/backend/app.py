@@ -1,19 +1,3 @@
-
-# import threading
-# import time
-# from datetime import datetime
-# import requests
-# import joblib
-# import pandas as pd
-# import matplotlib
-# matplotlib.use('Agg')  # GUI olmayan ortamda grafik oluşturmak için
-# import matplotlib.pyplot as plt
-# import io
-# import train_model
-# from fastapi import FastAPI
-# from fastapi.responses import StreamingResponse
-
-####-------OLD----------####
 import threading
 import time
 from datetime import datetime
@@ -181,46 +165,6 @@ def comparison():
     ac.plot_comparison(norm)
     return StreamingResponse(open("comparison_chart.png", "rb"), media_type="image/png")
 
-# @app.get("/investment")
-# def investment(start_date: str = Query(...), assets: str = Query(...)):
-#     asset_list = [a.strip() for a in assets.split(",")]
-#     result = ac.investment_comparison(start_date, asset_list)
-#     return result
-
-# @app.get("/investment")
-# def get_investment_comparison(assets: str, start_date: str):
-#     try:
-#         asset_list = [a.strip() for a in assets.split(",")]
-#         return ac.investment_comparison(start_date, asset_list, create_features_fn=create_features)
-#     except Exception as e:
-#         print("❌ ERROR in /investment:", e)
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
-# @app.get("/investment")
-# def get_investment_comparison(assets: str, start_date: str):
-#     try:
-#         # assets are currently unused in investment_comparison, but parsed here
-#         asset_list = [a.strip() for a in assets.split(",")]
-
-#         # Convert start_date string (YYYY-MM-DD) to number of days difference from today
-#         start_dt = datetime.strptime(start_date, "%Y-%m-%d")
-#         today = datetime.today()
-#         delta_days = (today - start_dt).days
-#         if delta_days <= 0:
-#             delta_days = 90  # fallback default if start_date is future or invalid
-
-#         # Call investment_comparison with correct arguments
-#         return ac.investment_comparison(
-#             model=model,
-#             create_features_fn=create_features,
-#             days=delta_days,
-#             starting_cash=10000,
-#             verbose=False
-#         )
-#     except Exception as e:
-#         print("❌ ERROR in /investment:", e)
-#         raise HTTPException(status_code=500, detail=str(e))
 @app.get("/investment")
 def get_investment_comparison(assets: str, start_date: str):
     try:

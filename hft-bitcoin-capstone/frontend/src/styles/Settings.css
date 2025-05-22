@@ -1,0 +1,358 @@
+/* Main Container */
+.settings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #2d3748;
+}
+
+/* Header */
+.settings-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.settings-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 10px 0;
+}
+
+.settings-description {
+  color: #718096;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Layout */
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 992px) {
+  .settings-content {
+    flex-direction: row;
+  }
+  
+  .settings-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+  }
+  
+  .settings-main {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Sidebar */
+.settings-sidebar {
+  margin-bottom: 20px;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.settings-tab:hover {
+  background-color: #f7fafc;
+  color: #2d3748;
+}
+
+.settings-tab.active {
+  background-color: #edf2f7;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.tab-icon {
+  margin-right: 12px;
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+/* Main Content */
+.settings-main {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+.settings-form h2 {
+  font-size: 1.5rem;
+  margin: 0 0 20px 0;
+  color: #1a202c;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #fff;
+  color: #2d3748;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+}
+
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 36px;
+}
+
+/* Checkbox */
+.form-check {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.form-check-input {
+  margin-right: 10px;
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.form-check-input:checked {
+  background-color: #4a6cf7;
+  border-color: #4a6cf7;
+}
+
+.form-check-input:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-check-label {
+  font-size: 0.95rem;
+  color: #4a5568;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4a6cf7 0%, #6a11cb 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+}
+
+.btn-primary:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-danger {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c53030;
+}
+
+.form-actions {
+  margin: 30px 0;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Alerts */
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: #f0fff4;
+  color: #2f855a;
+  border: 1px solid #c6f6d5;
+}
+
+.alert-error {
+  background-color: #fff5f5;
+  color: #c53030;
+  border: 1px solid #fed7d7;
+}
+
+/* Danger Zone */
+.danger-zone {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+}
+
+.danger-zone h3 {
+  margin-top: 0;
+  color: #c53030;
+  font-size: 1.1rem;
+}
+
+.danger-zone p {
+  margin: 10px 0 15px;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 15px;
+  }
+  
+  .settings-main {
+    padding: 20px 15px;
+  }
+  
+  .settings-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .settings-form h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .settings-container {
+    color: #e2e8f0;
+  }
+  
+  .settings-header h1 {
+    color: #f7fafc;
+  }
+  
+  .settings-description {
+    color: #a0aec0;
+  }
+  
+  .settings-main {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+  
+  .settings-form h2 {
+    color: #f7fafc;
+    border-color: #4a5568;
+  }
+  
+  .form-control {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .settings-tab {
+    color: #cbd5e0;
+  }
+  
+  .settings-tab:hover {
+    background-color: #2d3748;
+    color: #f7fafc;
+  }
+  
+  .settings-tab.active {
+    background-color: #4a5568;
+    color: #f7fafc;
+  }
+  
+  .form-check-label {
+    color: #cbd5e0;
+  }
+  
+  .danger-zone {
+    background-color: #2d1a1a;
+    border-color: #742a2a;
+  }
+  
+  .danger-zone h3 {
+    color: #feb2b2;
+  }
+  
+  .danger-zone p {
+    color: #a0aec0;
+  }
+}

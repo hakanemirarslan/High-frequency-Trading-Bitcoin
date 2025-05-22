@@ -35,10 +35,13 @@ const Sidebar = () => {
           <Link to="/wallet" className="sidebar-btn">
             Wallet
           </Link>
+          <Link to="/trade" className="sidebar-btn">
+            Trade
+          </Link>
           <Link to="/comparison" className="sidebar-btn">
             Asset Comparison
           </Link>
-          <Link to="comparison-assets" className="sidebar-btn">
+          <Link to="/comparison-assets" className="sidebar-btn">
             Profit Comparison
           </Link>
           <Link to="/settings" className="sidebar-btn">
